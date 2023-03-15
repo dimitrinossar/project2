@@ -32,4 +32,12 @@ router.post('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    const sql = `SELECT username, location, bio FROM users WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        const user = dbRes.rows[0];
+        res.render('user', {user});
+    });
+});
+
 module.exports = router;

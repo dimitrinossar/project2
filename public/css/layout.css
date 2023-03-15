@@ -1,3 +1,19 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
 body {
-    background-color: mistyrose;
+    padding-top: 100px;
 }

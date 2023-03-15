@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KissDogs</title>
+    <link rel="stylesheet" href="/css/preflight.css">
     <link rel="stylesheet" href="/css/layout.css">
     <%- style %>
 </head>
@@ -17,7 +18,7 @@
             <a href="/listing/new">Make a listing</a>
             <a href="/release/new">Add a release</a>
             <a href="/user/<%= user.id %>"><%= user.username %></a>
-            <form action="/sessions" method="post">
+            <form action="/session" method="post">
                 <input type="hidden" name="_method" value="delete">
                 <button>Logout</button>
             </form>
@@ -26,7 +27,10 @@
             <% } %>
         </div>
     </header>
-
-    <%- body %>
+    <div id="gutters">
+        <div id="content-wrapper">
+            <%- body %>
+        </div>
+    </div>
 </body>
 </html>
