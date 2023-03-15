@@ -13,22 +13,23 @@ router.post('/', (req, res) => {
         // stops duplication of releases
         if (checkRes.rows.length !== 0) {
             res.send('Release already exists');
-            return;
         }
-        const insertSql = `
-            INSERT INTO releases (title, artist, genre, catalog_number)
-            VALUES ($1, $2, $3, $4)
-            RETURNING id;
-        `;
-        const values = [
-            req.body.title,
-            req.body.artist,
-            req.body.genre,
-            req.body.catalog_number
-        ];
-        pool.query(insertSql, values, (err, insertRes) => {
-            res.redirect(`/release/${insertRes.rows[0].id}`);
-        });
+        else {
+            const insertSql = `
+                INSERT INTO releases (title, artist, genre, catalog_number)
+                VALUES ($1, $2, $3, $4)
+                RETURNING id;
+            `;
+            const values = [
+                req.body.title,
+                req.body.artist,
+                req.body.genre,
+                req.body.catalog_number
+            ];
+            pool.query(insertSql, values, (err, insertRes) => {
+                res.redirect(`/release/${insertRes.rows[0].id}`);
+            });
+        }
     });
 });
 

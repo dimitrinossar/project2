@@ -17,3 +17,15 @@ header {
 body {
     padding-top: 100px;
 }
+
+#gutters {
+    padding: 0 50px;
+    margin: 0 auto;
+}
+
+#content-wrapper {
+    background-color: white;
+    padding: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
