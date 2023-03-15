@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
+const pool = require('./database');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 const methodOverride = require('./middlewares/method_override');
@@ -27,6 +28,7 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(expressLayouts);
+app.set("layout extractStyles", true)
 app.use(setCurrentUser);
 app.use(viewHelpers);
 
@@ -36,12 +38,15 @@ app.get('/login', (req, res) => {
 app.use('/sessions', sessionController);
 app.use('/users', userController);
 app.use('/releases', releaseController);
-app.use('listings', listingController);
+app.use('/listings', listingController);
 app.get('/', (req, res) => {
     const sql = `
-        SELECT * FROM releases;
+        SELECT DISTINCT title, artist FROM releases;
     `;
-    res.render('home');
+    pool.query(sql, (err, dbRes) => {
+        const releases = dbRes.rows;
+        res.render('home', {releases});
+    });
 });
 
 app.all('*', (req, res) => {
