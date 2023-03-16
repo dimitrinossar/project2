@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "lint:js": "eslint --ext \".js\" .",
+    "lint:prettier": "prettier --check .",
+    "lint": "yarn lint:prettier && yarn lint:js",
+    "lintfix": "prettier --write --list-different . && lint:js --fix"
   },
   "repository": {
     "type": "git",
