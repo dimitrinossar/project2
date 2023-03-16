@@ -4,7 +4,6 @@ const pool = require('../database')
 const loginCheck = require('../middlewares/login_check')
 
 router.get('/new', loginCheck, (req, res) => {
-  req.flash('listingError', 'No release exists, please add it')
   res.render('new_listing')
 })
 
@@ -12,6 +11,7 @@ router.post('/', (req, res) => {
   const checkSql = `SELECT * FROM releases WHERE catalog_number = $1;`
   pool.query(checkSql, [req.body.catalog_number], (err, checkRes) => {
     if (checkRes.rows.length === 0) {
+      req.flash('listingError', 'No release exists, please add it')
       res.redirect('/release/new')
     } else {
       const release = checkRes.rows[0]

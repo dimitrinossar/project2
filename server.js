@@ -11,7 +11,6 @@ const setCurrentUser = require('./middlewares/set_current_user')
 const viewHelpers = require('./middlewares/view_helpers')
 const sessionController = require('./controllers/session_controller')
 const userController = require('./controllers/user_controller')
-const masterController = require('./controllers/master_controller')
 const artistController = require('./controllers/artist_controller')
 const releaseController = require('./controllers/release_controller')
 const listingController = require('./controllers/listing_controller')
@@ -47,17 +46,16 @@ app.get('/login', (req, res) => {
 })
 app.use('/session', sessionController)
 app.use('/user', userController)
-app.use('/master', masterController)
 app.use('/artist', artistController)
 app.use('/release', releaseController)
 app.use('/listing', listingController)
 app.get('/', (req, res) => {
   const sql = `
-        SELECT DISTINCT title, artist FROM releases;
+        SELECT id, title, artist, catalog_number FROM releases;
     `
   pool.query(sql, (err, dbRes) => {
-    const masters = dbRes.rows
-    res.render('home', { masters })
+    const releases = dbRes.rows
+    res.render('home', { releases })
   })
 })
 

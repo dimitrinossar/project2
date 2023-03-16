@@ -33,10 +33,19 @@ router.post('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-  const sql = `SELECT * FROM releases WHERE id = $1;`
-  pool.query(sql, [req.params.id], (err, dbRes) => {
-    const release = dbRes.rows[0]
-    res.render('release', { release })
+  const releaseSql = `SELECT * FROM releases WHERE id = $1;`
+  pool.query(releaseSql, [req.params.id], (err, releaseRes) => {
+    const release = releaseRes.rows[0]
+    const listingsSql = `
+              SELECT users.username, users.location, listings.price, listings.condition, listings.info, listings.user_id
+              FROM listings INNER JOIN users
+              ON listings.release_id = $1
+              AND listings.user_id = users.id;
+          `
+    pool.query(listingsSql, [release.id], (err, listingsRes) => {
+      const listings = listingsRes.rows
+      res.render('release', { release, listings })
+    })
   })
 })
 
