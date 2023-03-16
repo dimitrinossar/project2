@@ -1,0 +1,10 @@
+<form action="/user/<%= user.id %>" method="post">
+    <input type="hidden" name="_method" value="put">
+    <label for="">Username</label>
+    <input type="text" name="username" value="<%= user.username %>">
+    <label for="">Location</label>
+    <input type="text" name="location" value="<%= user.location %>">
+    <label for="">Bio</label>
+    <input type="text" name="bio" value="<%= user.bio %>">
+    <button>Submit</button>
+</form>

@@ -1,0 +1,12 @@
+<form action="/release/<%= release.id %>" method="post">
+    <input type="hidden" name="_method" value="put">
+    <label for="">Title</label>
+    <input type="text" name="title" value="<%= release.title %>">
+    <label for="">Artist</label>
+    <input type="text" name="artist" value="<%= release.artist %>">
+    <label for="">Genre</label>
+    <input type="text" name="genre" value="<%= release.genre %>">
+    <label for="">Catalog#</label>
+    <input type="text" name="catalog_number" value="<%= release.catalog_number %>">
+    <button>Submit</button>
+</form>

@@ -34,10 +34,42 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    const sql = `SELECT username, location, bio FROM users WHERE id = $1;`;
+    const sql = `SELECT id, username, location, bio FROM users WHERE id = $1;`;
     pool.query(sql, [req.params.id], (err, dbRes) => {
         const user = dbRes.rows[0];
         res.render('user', {user});
+    });
+});
+
+router.get('/:id/edit', (req, res) => {
+    const sql = `SELECT id, username, location, bio FROM users WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        const user = dbRes.rows[0];
+        res.render('edit_user', {user});
+    });
+});
+
+router.put('/:id', (req, res) => {
+    const sql = `
+        UPDATE users
+        SET username = $1, location = $2, bio = $3
+        WHERE id = $4;
+    `;
+    const values = [
+        req.body.username,
+        req.body.location,
+        req.body.bio,
+        req.params.id
+    ];
+    pool.query(sql, values, (err, dbRes) => {
+        res.redirect(`/user/${req.params.id}`);
+    });
+});
+
+router.delete('/:id', (req, res) => {
+    const sql = `DELETE FROM users WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        res.redirect('/');
     });
 });
 

@@ -8,7 +8,7 @@ router.get('/new', loginCheck, (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const checkSql = `SELECT FROM releases WHERE catalog_number = $1;`;
+    const checkSql = `SELECT * FROM releases WHERE catalog_number = $1;`;
     pool.query(checkSql, [req.body.catalog_number], (err, checkRes) => {
         // stops duplication of releases
         if (checkRes.rows.length !== 0) {
@@ -30,6 +30,47 @@ router.post('/', (req, res) => {
                 res.redirect(`/release/${insertRes.rows[0].id}`);
             });
         }
+    });
+});
+
+router.get('/:id', (req, res) => {
+    const sql = `SELECT * FROM releases WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        const release = dbRes.rows[0];
+        res.render('release', {release});
+    })
+});
+
+router.get('/:id/edit', loginCheck, (req, res) => {
+    const sql = `SELECT * FROM releases WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        const release = dbRes.rows[0];
+        res.render('edit_release', {release});
+    });
+});
+
+router.put('/:id', loginCheck, (req, res) => {
+    const sql = `
+        UPDATE releases
+        SET title = $1, artist = $2, genre = $3, catalog_number = $4
+        WHERE id = $5;
+    `;
+    const values = [
+        req.body.title,
+        req.body.artist,
+        req.body.genre,
+        req.body.catalog_number,
+        req.params.id
+    ];
+    pool.query(sql, values, (err, dbRes) => {
+        res.redirect(`/release/${req.params.id}`);
+    });
+});
+
+router.delete('/:id', loginCheck, (req, res) => {
+    const sql = `DELETE FROM releases WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        res.redirect('/');
     });
 });
 
