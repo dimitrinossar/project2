@@ -4,7 +4,7 @@
 <p><%= user.bio %></p>
 <img src="https://placekitten.com/250/250">
 
-<% if (isCorrectUser()) { %>
+<% if (isCurrentUserPage()) { %>
 <a href="/user/<%= user.id %>/edit">Edit</a>
 <form action="/user/<%= user.id %>" method="post">
     <input type="hidden" name="_method" value="delete">

@@ -1,0 +1,10 @@
+<form action="/listing/<%= listing.id %>" method="post">
+    <input type="hidden" name="_method" value="put">
+    <label for="">Price</label>
+    <input type="text" name="price" value="<%= listing.price %>" required>
+    <label for="">Condition</label>
+    <input type="text" name="condition" value="<%= listing.condition %>" required>
+    <label for="">Info (optional)</label>
+    <input type="text" name="info" value="<%= listing.info %>">
+    <button>Submit</button>
+</form>

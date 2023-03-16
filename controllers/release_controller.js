@@ -4,7 +4,7 @@ const pool = require('../database')
 const loginCheck = require('../middlewares/login_check')
 
 router.get('/new', loginCheck, (req, res) => {
-  res.render('new_release')
+  res.render('new_release', { releaseMessage: req.flash('listingError') })
 })
 
 router.post('/', (req, res) => {

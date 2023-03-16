@@ -4,6 +4,7 @@ const pool = require('../database')
 const loginCheck = require('../middlewares/login_check')
 
 router.get('/new', loginCheck, (req, res) => {
+  req.flash('listingError', 'No release exists, please add it')
   res.render('new_listing')
 })
 
@@ -32,11 +33,43 @@ router.post('/', (req, res) => {
   })
 })
 
-router.get('/:id', (req, res) => {
-  const sql = `SELECT * FROM listings WHERE id = $1;`
+router.get('/:id/edit', (req, res) => {
+  const sql = `SELECT id, price, condition, info FROM listings WHERE id = $1;`
   pool.query(sql, [req.params.id], (err, dbRes) => {
     const listing = dbRes.rows[0]
-    res.render('listing', { listing })
+    res.render('edit_listing', { listing })
+  })
+})
+
+router.put('/:id', (req, res) => {
+  const checkSql = `SELECT user_id FROM listings WHERE id = $1;`
+  pool.query(checkSql, [req.params.id], (err, checkRes) => {
+    const user = checkRes.rows[0].user_id
+    const insertSql = `
+              UPDATE listings
+              SET price = $1, condition = $2, info = $3
+              WHERE id = $4    
+          `
+    const values = [
+      req.body.price,
+      req.body.condition,
+      req.body.info,
+      req.params.id,
+    ]
+    pool.query(insertSql, values, (err, insertRes) => {
+      res.redirect(`/user/${user}`)
+    })
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  const checkSql = `SELECT user_id FROM listings WHERE id = $1;`
+  pool.query(checkSql, [req.params.id], (err, checkRes) => {
+    const user = checkRes.rows[0].user_id
+    const insertSql = `DELETE FROM listings WHERE id = $1;`
+    pool.query(insertSql, [req.params.id], (err, insertRes) => {
+      res.redirect(`/user/${user}`)
+    })
   })
 })
 
