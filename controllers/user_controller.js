@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
           const insertSql = `
-                        INSERT INTO users (email, pw, username, profile_picture)
+                        INSERT INTO users (email, password, username, profile_picture)
                         VALUES ($1, $2, $3, $4)
                         RETURNING id;
                     `

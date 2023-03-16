@@ -4,7 +4,7 @@ const pool = require('../database')
 const bcrypt = require('bcrypt')
 
 router.post('/', (req, res) => {
-  const sql = `SELECT id, pw FROM users WHERE username = $1;`
+  const sql = `SELECT id, password FROM users WHERE username = $1;`
   pool.query(sql, [req.body.username], (err, dbRes) => {
     // checks for username
     if (dbRes.rows.length === 0) {
@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
       res.redirect('/login')
     } else {
       const user = dbRes.rows[0]
-      bcrypt.compare(req.body.password, user.pw, (err, result) => {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (result) {
           req.session.user = user.id
           res.redirect('/')
