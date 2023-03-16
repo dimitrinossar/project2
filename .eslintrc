@@ -7,10 +7,7 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "plugins": [],
   "rules": {}
 }
