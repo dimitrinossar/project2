@@ -8,7 +8,8 @@ router.post('/', (req, res) => {
     pool.query(checkSql, [req.body.email], (err, checkRes) => {
         // checks if there is an account with the same email
         if (checkRes.rows.length !== 0) {
-            res.send('email taken');
+            req.flash('signUpError', 'email taken');
+            res.redirect('/login');
         }
         else {
             bcrypt.genSalt(10, (err, salt) => {

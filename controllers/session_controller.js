@@ -8,7 +8,8 @@ router.post('/', (req, res) => {
     pool.query(sql, [req.body.username], (err, dbRes) => {
         // checks for username
         if (dbRes.rows.length === 0) {
-            res.send('no user found');
+            req.flash('loginError', 'no user found')
+            res.redirect('/login');
         }
         else {
             const user = dbRes.rows[0];
@@ -19,7 +20,8 @@ router.post('/', (req, res) => {
                 }
                 // passwords do not match
                 else {
-                    res.send('incorrect password');
+                    req.flash('loginError', 'incorrect password')
+                    res.redirect('/login');
                 }
             });
         }

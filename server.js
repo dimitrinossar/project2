@@ -4,6 +4,7 @@ const port = process.env.PORT || 8080;
 const pool = require('./database');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
+const flash = require('connect-flash');
 const methodOverride = require('./middlewares/method_override');
 const expressLayouts = require('express-ejs-layouts');
 const setCurrentUser = require('./middlewares/set_current_user');
@@ -28,13 +29,14 @@ app.use(session({
     secret: process.env.SECRET_KEY || 'keyboard cat',
     saveUninitialized: true
 }));
+app.use(flash());
 app.use(expressLayouts);
 app.set("layout extractStyles", true)
 app.use(setCurrentUser);
 app.use(viewHelpers);
 
 app.get('/login', (req, res) => {
-    res.render('login', {layout: false});
+    res.render('login', {layout: false, loginMessage: req.flash('loginError'), signUpMessage: req.flash('signUpError')});
 });
 app.use('/session', sessionController);
 app.use('/user', userController);

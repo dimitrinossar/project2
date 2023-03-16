@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
         else {
             const release = checkRes.rows[0];
             const insertSql = `
-                INSERT INTRO listings (release_id, user_id, price, condition, info)
+                INSERT INTO listings (release_id, user_id, price, condition, info)
                 VALUES ($1, $2, $3, $4, $5);
             `;
             const values = [
@@ -31,6 +31,14 @@ router.post('/', (req, res) => {
             });
         }
     });
-})
+});
+
+router.get('/:id', (req, res) => {
+    const sql = `SELECT * FROM listings WHERE id = $1;`;
+    pool.query(sql, [req.params.id], (err, dbRes) => {
+        const listing = dbRes.rows[0];
+        res.render('listing', {listing});
+    });
+});
 
 module.exports = router;
