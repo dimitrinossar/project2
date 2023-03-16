@@ -12,8 +12,8 @@
 
         <% if (isCurrentUserPage()) { %>
         <a href="/user/<%= user.id %>/edit">Edit</a>
-        <form action="/user/<%= user.id %>" method="post">
-            <input type="hidden" name="_method" value="delete">
+        <form action="/user/<%= user.id %>?_method=DELETE" method="post">
+            <!-- <input type="hidden" name="_method" value="delete"> -->
             <button>Delete</button>
         </form>
         <% } %>
@@ -25,8 +25,8 @@
             <p><%= listing.catalog_number %> | <%= listing.title %> | <%= listing.artist %> | <%= listing.price %> | <%= listing.condition %><% if (listing.info) { %> | <%= listing.info %><% } %></p>
             <% if (isCurrentUserPage()) { %>
             <a href="/listing/<%= listing.id %>/edit">Edit</a>
-            <form action="/listing/<%= listing.id %>" method="post">
-                <input type="hidden" name="_method" value="delete">
+            <form action="/listing/<%= listing.id %>?_method=DELETE" method="post">
+                <!-- <input type="hidden" name="_method" value="delete"> -->
                 <button>Delete</button>
             </form>
             <% } %>

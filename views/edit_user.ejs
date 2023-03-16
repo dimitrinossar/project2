@@ -1,9 +1,9 @@
-<form action="/user/<%= user.id %>" method="post">
-    <input type="hidden" name="_method" value="put">
+<form action="/user/<%= user.id %>?_method=PUT" method="post" enctype="multipart/form-data">
+    <!-- <input type="hidden" name="_method" value="put"> -->
     <label for="">Username</label>
     <input type="text" name="username" value="<%= user.username %>">
-    <!-- <label for="">Profile Picture</label>
-    <input type="file" name="profile_picture"> -->
+    <label for="">Profile Picture</label>
+    <input type="file" name="profile_picture">
     <label for="">Location</label>
     <input type="text" name="location" value="<%= user.location %>">
     <label for="">Bio</label>

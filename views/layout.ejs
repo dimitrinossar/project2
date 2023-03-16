@@ -12,9 +12,9 @@
 <body>
     <header>
         <nav>
-           <a href="/"><h1>KissDogs</h1></a> 
+           <a href="/"><h1>💋🐕 - KissDogs</h1></a> 
            <form action="/search">
-            <input type="search" name="search">
+            <input type="search" name="search" placeholder="search by release title">
             <button>Search</button>
            </form>
         </nav>
@@ -23,8 +23,8 @@
             <a href="/listing/new">Make a listing</a>
             <a href="/release/new">Add a release</a>
             <a href="/user/<%= currentUser.id %>"><%= currentUser.username %></a>
-            <form action="/session" method="post">
-                <input type="hidden" name="_method" value="delete">
+            <form action="/session?_method=DELETE" method="post">
+                <!-- <input type="hidden" name="_method" value="delete"> -->
                 <button>Logout</button>
             </form>
             <% } else { %>

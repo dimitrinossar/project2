@@ -1,8 +1,21 @@
+* {
+  border: 1px solid red;
+}
+
+html {
+  height: 100%
+}
+
+body {
+  min-height: 100%;
+}
+
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 25px;
-  background-color: white;
+  background-color: rgb(60, 60, 60);
   position: fixed;
   top: 0;
   width: 100%;
@@ -11,7 +24,27 @@ header {
 nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 50px;
+}
+
+h1 {
+  font-size: 2rem;
+  color: white;
+}
+
+nav input {
+  line-height: 2.5rem;
+  width: 300px;
+  float: left;
+  padding: 0 5px;
+}
+
+nav button {
+  background-color: white;
+  color: black;
+  line-height: 2.5rem;
+  padding: 0 5px;
 }
 
 #user-actions {
@@ -20,8 +53,16 @@ nav {
   gap: 10px;
 }
 
+#user-actions a {
+  color: white;
+}
+
+#user-actions button {
+  color: white;
+}
+
 body {
-  padding-top: 100px;
+  padding-top: 90px;
 }
 
 #gutters {
@@ -30,7 +71,7 @@ body {
 }
 
 #content-wrapper {
-  background-color: white;
+  background-color: grey;
   padding: 25px;
   max-width: 1200px;
   margin: 0 auto;

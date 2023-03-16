@@ -11,7 +11,7 @@ router.get('/new', loginCheck, (req, res) => {
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/', upload.single('album_art'), (req, res) => {
   const checkSql = `SELECT * FROM releases WHERE catalog_number = $1;`
   pool.query(checkSql, [req.body.catalog_number], (err, checkRes) => {
     // stops duplication of releases
@@ -24,12 +24,15 @@ router.post('/', (req, res) => {
                 VALUES ($1, $2, $3, $4, $5)
                 RETURNING id;
             `
+      const check =
+        req.file.path ||
+        'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/default_album_300_g4_xaz4xp.png'
       const values = [
         req.body.title,
         req.body.artist,
         req.body.genre,
         req.body.catalog_number,
-        'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/default_album_300_g4_xaz4xp.png',
+        check,
       ]
       pool.query(insertSql, values, (err, insertRes) => {
         res.redirect(`/release/${insertRes.rows[0].id}`)
@@ -66,14 +69,15 @@ router.get('/:id/edit', loginCheck, (req, res) => {
 router.put('/:id', loginCheck, upload.single('album_art'), (req, res) => {
   const sql = `
             UPDATE releases
-            SET title = $1, artist = $2, genre = $3, catalog_number = $4
-            WHERE id = $5;
+            SET title = $1, artist = $2, genre = $3, catalog_number = $4, album_art = $5
+            WHERE id = $6;
         `
   const values = [
     req.body.title,
     req.body.artist,
     req.body.genre,
     req.body.catalog_number,
+    req.path.file,
     req.params.id,
   ]
   pool.query(sql, values, (err, dbRes) => {

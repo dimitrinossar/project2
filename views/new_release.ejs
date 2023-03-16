@@ -1,4 +1,4 @@
-<form action="/release" method="post">
+<form action="/release" method="post" enctype="multipart/form-data">
     <label for="">Title</label>
     <input type="text" name="title" required
     <label for="">Artist</label>
@@ -7,8 +7,8 @@
     <input type="text" name="genre">
     <label for="">Catalog#</label>
     <input type="text" name="catalog_number" required>
-    <!-- <label for="">Album Art</label>
-    <input type="file" name="album_art"> -->
+    <label for="">Album Art</label>
+    <input type="file" name="album_art">
     <button>Submit</button>
 </form>
 <p><%= listingMessage %></p>

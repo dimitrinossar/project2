@@ -5,7 +5,8 @@ const pool = require('./database')
 const session = require('express-session')
 const MemoryStore = require('memorystore')(session)
 const flash = require('connect-flash')
-const methodOverride = require('./middlewares/method_override')
+// const methodOverride = require('./middlewares/method_override')
+const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts')
 const setCurrentUser = require('./middlewares/set_current_user')
 const viewHelpers = require('./middlewares/view_helpers')
@@ -19,7 +20,7 @@ app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
-app.use(methodOverride)
+app.use(methodOverride('_method'))
 app.use(
   session({
     cookie: { maxAge: 86400000 },

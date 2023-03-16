@@ -1,5 +1,5 @@
-<form action="/listing/<%= listing.id %>" method="post">
-    <input type="hidden" name="_method" value="put">
+<form action="/listing/<%= listing.id %>?_method=PUT" method="post">
+    <!-- <input type="hidden" name="_method" value="put"> -->
     <label for="">Price</label>
     <input type="text" name="price" value="<%= listing.price %>" required>
     <label for="">Condition</label>

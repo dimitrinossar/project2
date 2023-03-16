@@ -47,7 +47,6 @@ router.get('/:id', (req, res) => {
           `
     pool.query(listingsSql, [user.id], (err, listingsRes) => {
       const listings = listingsRes.rows
-      console.log(user)
       res.render('user', { user, listings })
     })
   })
@@ -61,10 +60,10 @@ router.get('/:id/edit', (req, res) => {
   })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', upload.single('profile_picture'), (req, res) => {
   const sql = `
             UPDATE users
-            SET username = $1, location = $2, bio = $3
+            SET username = $1, location = $2, bio = $3, profile_picture = $5
             WHERE id = $4;
         `
   const values = [
@@ -72,6 +71,7 @@ router.put('/:id', (req, res) => {
     req.body.location,
     req.body.bio,
     req.params.id,
+    req.file.path,
   ]
   pool.query(sql, values, (err, dbRes) => {
     res.redirect(`/user/${req.params.id}`)
