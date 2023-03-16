@@ -9,5 +9,7 @@
   },
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "plugins": [],
-  "rules": {}
+  "rules": {
+    "no-unused-vars": "off"
+  }
 }
