@@ -3,8 +3,9 @@ CREATE DATABASE kissdogs;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL,
-    pw TEXT NOT NULL,
+    password TEXT NOT NULL,
     username TEXT,
+    profile_picture TEXT,
     location TEXT,
     bio TEXT
 );

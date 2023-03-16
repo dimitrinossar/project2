@@ -11,9 +11,14 @@
 </head>
 <body>
     <header>
-        <a href="/"><h1>KissDogs</h1></a>
-        <div id="search-placeholder"></div>
-        <div id="actions">
+        <nav>
+           <a href="/"><h1>KissDogs</h1></a> 
+           <form action="/search">
+            <input type="search" name="search">
+            <button>Search</button>
+           </form>
+        </nav>
+        <div id="user-actions">
             <% if (isLoggedIn()) { %>
             <a href="/listing/new">Make a listing</a>
             <a href="/release/new">Add a release</a>

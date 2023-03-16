@@ -1,10 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const pool = require('../database')
+const upload = require('../middlewares/upload')
 const loginCheck = require('../middlewares/login_check')
 
 router.get('/new', loginCheck, (req, res) => {
-  res.render('new_release', { releaseMessage: req.flash('listingError') })
+  res.render('new_release', {
+    listingMessage: req.flash('listingError'),
+    releaseMessage: req.flash('releaseError'),
+  })
 })
 
 router.post('/', (req, res) => {
@@ -12,11 +16,12 @@ router.post('/', (req, res) => {
   pool.query(checkSql, [req.body.catalog_number], (err, checkRes) => {
     // stops duplication of releases
     if (checkRes.rows.length !== 0) {
-      res.send('Release already exists')
+      req.flash('releaseError', 'Release already exists')
+      res.redirect('/release/new')
     } else {
       const insertSql = `
-                INSERT INTO releases (title, artist, genre, catalog_number)
-                VALUES ($1, $2, $3, $4)
+                INSERT INTO releases (title, artist, genre, catalog_number, album_art)
+                VALUES ($1, $2, $3, $4, $5)
                 RETURNING id;
             `
       const values = [
@@ -24,6 +29,7 @@ router.post('/', (req, res) => {
         req.body.artist,
         req.body.genre,
         req.body.catalog_number,
+        'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/default_album_300_g4_xaz4xp.png',
       ]
       pool.query(insertSql, values, (err, insertRes) => {
         res.redirect(`/release/${insertRes.rows[0].id}`)
@@ -57,12 +63,12 @@ router.get('/:id/edit', loginCheck, (req, res) => {
   })
 })
 
-router.put('/:id', loginCheck, (req, res) => {
+router.put('/:id', loginCheck, upload.single('album_art'), (req, res) => {
   const sql = `
-        UPDATE releases
-        SET title = $1, artist = $2, genre = $3, catalog_number = $4
-        WHERE id = $5;
-    `
+            UPDATE releases
+            SET title = $1, artist = $2, genre = $3, catalog_number = $4
+            WHERE id = $5;
+        `
   const values = [
     req.body.title,
     req.body.artist,

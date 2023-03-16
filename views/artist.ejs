@@ -1,3 +1,8 @@
-<% for (let album of albums) { %>
-<a href="/master/<%= album.title %>"><%= album.title %></a>
-<% } %>
+<main>
+    <% for (let release of releases) { %>
+    <a href="/release/<%= release.id %>"><div class="release">
+        <h3><%= release.title %></h3>
+        <h4><%= release.catalog_number %></h4>
+    </div></a>
+    <% } %>    
+</main>

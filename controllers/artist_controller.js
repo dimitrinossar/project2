@@ -3,10 +3,10 @@ const router = express.Router()
 const pool = require('../database')
 
 router.get('/:artist', (req, res) => {
-  const sql = `SELECT DISTINCT title FROM releases WHERE artist = $1;`
+  const sql = `SELECT id, title, catalog_number FROM releases WHERE artist = $1;`
   pool.query(sql, [req.params.artist], (err, dbRes) => {
-    const albums = dbRes.rows
-    res.render('artist', { albums })
+    const releases = dbRes.rows
+    res.render('artist', { releases })
   })
 })
 

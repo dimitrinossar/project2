@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const pool = require('../database')
+const upload = require('../middlewares/upload')
 const bcrypt = require('bcrypt')
 
 router.post('/', (req, res) => {
@@ -14,14 +15,15 @@ router.post('/', (req, res) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
           const insertSql = `
-                        INSERT INTO users (email, pw, username)
-                        VALUES ($1, $2, $3)
+                        INSERT INTO users (email, pw, username, profile_picture)
+                        VALUES ($1, $2, $3, $4)
                         RETURNING id;
                     `
           const values = [
             req.body.email,
             hash,
             req.body.email.slice(0, req.body.email.indexOf('@')),
+            'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968474/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg_rbx0ij.jpg',
           ]
           pool.query(insertSql, values, (err, insertRes) => {
             req.session.user = insertRes.rows[0].id
@@ -34,7 +36,7 @@ router.post('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-  const userSql = `SELECT id, email, username, location, bio FROM users WHERE id = $1;`
+  const userSql = `SELECT id, email, username, profile_picture, location, bio FROM users WHERE id = $1;`
   pool.query(userSql, [req.params.id], (err, userRes) => {
     const user = userRes.rows[0]
     const listingsSql = `
@@ -45,13 +47,14 @@ router.get('/:id', (req, res) => {
           `
     pool.query(listingsSql, [user.id], (err, listingsRes) => {
       const listings = listingsRes.rows
+      console.log(user)
       res.render('user', { user, listings })
     })
   })
 })
 
 router.get('/:id/edit', (req, res) => {
-  const sql = `SELECT id, username, location, bio FROM users WHERE id = $1;`
+  const sql = `SELECT id, username, profile_picture, location, bio FROM users WHERE id = $1;`
   pool.query(sql, [req.params.id], (err, dbRes) => {
     const user = dbRes.rows[0]
     res.render('edit_user', { user })
@@ -60,10 +63,10 @@ router.get('/:id/edit', (req, res) => {
 
 router.put('/:id', (req, res) => {
   const sql = `
-        UPDATE users
-        SET username = $1, location = $2, bio = $3
-        WHERE id = $4;
-    `
+            UPDATE users
+            SET username = $1, location = $2, bio = $3
+            WHERE id = $4;
+        `
   const values = [
     req.body.username,
     req.body.location,

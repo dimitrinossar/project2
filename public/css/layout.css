@@ -8,7 +8,13 @@ header {
   width: 100%;
 }
 
-#actions {
+nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+#user-actions {
   display: flex;
   justify-content: space-between;
   gap: 10px;
