@@ -1,25 +1,31 @@
 <main>
     <div id="user-card">
-        <h3><%= user.username %></h2>
-        <h4><%= user.location %></h4>
-        <h4>About Me:</h4>
-        <p><%= user.bio %></p>
         <img src="<%= user.profile_picture %>">
+        <h3><%= user.username %></h3>
+        <h4>Location: <%= user.location %></h4>
+        <h2>About Me:</h2>
+        <p><%= user.bio %></p>
 
         <% if (!isCurrentUserPage()) { %>
         <a href="mailto:<%= user.email %>">Message</a>
         <% } %>
 
         <% if (isCurrentUserPage()) { %>
-        <a href="/user/<%= user.id %>/edit">Edit</a>
-        <form action="/user/<%= user.id %>?_method=DELETE" method="post">
-            <!-- <input type="hidden" name="_method" value="delete"> -->
-            <button>Delete</button>
-        </form>
+        <div id="actions">
+            <a href="/user/<%= user.id %>/edit">Edit</a>
+            <form action="/user/<%= user.id %>?_method=DELETE" method="post">
+                <!-- <input type="hidden" name="_method" value="delete"> -->
+                <button>Delete</button>
+            </form>            
+        </div>
         <% } %>
     </div>
     <div id="listings">
-        <h2>Listings</h2>
+        <h2>Listings:</h2>
+        <% if (listings.length === 0) { %>
+        <p>No listings</p>
+        <a href="/listing/new">Make one!</a>
+        <% } %>
         <% for (let listing of listings) { %>
         <div class="listing">
             <p><%= listing.catalog_number %> | <%= listing.title %> | <%= listing.artist %> | <%= listing.price %> | <%= listing.condition %><% if (listing.info) { %> | <%= listing.info %><% } %></p>

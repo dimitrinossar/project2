@@ -1,0 +1,35 @@
+main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    background-color: black;
+    gap: 1px;
+}
+
+#release {
+    background-color: white;
+    padding: 0 10px;
+}
+
+#listings {
+    background-color: white;
+    padding: 0 25px;
+}
+
+#release img {
+    height: 250px;
+    float: left;
+    margin-right: 25px;
+}
+
+#release h3 {
+    font-size: 2rem;
+}
+
+#listings h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.listing p {
+    font-size: 1.5rem;
+}

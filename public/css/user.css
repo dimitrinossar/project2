@@ -1,4 +1,50 @@
+main {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: black;
+    gap: 1px;
+}
+
+#user-card {
+    background-color: white;
+    padding: 0 10px 10px;
+    position: relative;
+}
+
+#user-card img {
+    height: 400px;
+    float: right;
+}
+
+#user-card h3 {
+    font-size: 2rem;
+}
+
+#user-card h4 {
+    font-size: 1.5rem;
+}
+
+#user-card h2 {
+    margin: 50px 0 10px;
+    font-size: 2rem;
+}
+
+#actions {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    position: absolute;
+    bottom: 0;
+}
+
+#listings {
+    background-color: white;
+    padding: 10px;
+}
+
 .listing {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    width: fit-content;
 }

@@ -1,12 +1,9 @@
 <main>
     <div id="release">
-        <h3><%= release.title %></h2>
-        <a href="/artist/<%= release.artist %>"><h3><%= release.artist %></h3></a>
-        <h4><%= release.genre %></h4>
-        <h4><%= release.catalog_number %></h5>
-        
         <img src="<%= release.album_art %>" alt="">
-
+        <h3><%= release.title %> - <a href="/artist/<%= release.artist %>"><%= release.artist %></a></h3>
+        <% if (release.genre) { %><h4>Genre: <%= release.genre %></h4><% } %>
+        <h4>Catalog #: <%= release.catalog_number %></h5>
         <% if (isLoggedIn()) { %>
         <a href="/release/<%= release.id %>/edit">Edit</a>
         <form action="/release/<%= release.id %>?_method=DELETE" method="post">
@@ -15,14 +12,18 @@
         </form>
         <% } %>
     </div>
-    <% if (listings.length !== 0) { %>
     <div id="listings">
-        <h2>Listings</h2>
+        <h2>Listings:</h2>
+        <% if (listings.length === 0) { %>
+        <p>No Listings</p>
+        <a href="/listing/new">Add One!</a>
+        <% } %>        
         <% for (let listing of listings) { %>
         <a href="/user/<%= listing.user_id %>"><div class="listing">
             <p><%= listing.username %><% if (listing.location) { %> | <%= listing.location %><% } %> | <%= listing.price %> | <%= listing.condition %><% if (listing.info) { %> | <%= listing.info %><% } %></p>
         </div></a>
         <% } %>
     </div>
-    <% } %>
 </main>
+
+<link rel="stylesheet" href="/css/release.css">
