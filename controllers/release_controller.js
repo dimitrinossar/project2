@@ -24,9 +24,9 @@ router.post('/', upload.single('album_art'), (req, res) => {
         VALUES ($1, $2, $3, $4, $5)
         RETURNING id;
       `
-      const check =
-        req.file.path ||
-        'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/default_album_300_g4_xaz4xp.png'
+      const check = req.file
+        ? req.file.path
+        : 'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/kissdogs/default_album_300_g4_xaz4xp.png'
       const values = [
         req.body.title,
         req.body.artist,
@@ -69,7 +69,7 @@ router.get('/:id/edit', loginCheck, (req, res) => {
 router.put('/:id', loginCheck, upload.single('album_art'), (req, res) => {
   let sql = ''
   let values = []
-  if (req.file.path) {
+  if (req.file) {
     sql = `
       UPDATE releases
       SET title = $1, artist = $2, genre = $3, catalog_number = $4, album_art = $5
@@ -80,7 +80,7 @@ router.put('/:id', loginCheck, upload.single('album_art'), (req, res) => {
       req.body.artist,
       req.body.genre,
       req.body.catalog_number,
-      req.path.file,
+      req.file.path,
       req.params.id,
     ]
   } else {

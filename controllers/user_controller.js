@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
             req.body.email,
             hash,
             req.body.email.slice(0, req.body.email.indexOf('@')),
-            'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968474/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg_rbx0ij.jpg',
+            'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968474/kissdogs/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg_rbx0ij.jpg',
           ]
           pool.query(insertSql, values, (err, insertRes) => {
             req.session.user = insertRes.rows[0].id
@@ -63,7 +63,7 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', upload.single('profile_picture'), (req, res) => {
   let sql = ''
   let values = []
-  if (req.file.path) {
+  if (req.file) {
     sql = `
       UPDATE users
       SET username = $1, location = $2, bio = $3, profile_picture = $4
