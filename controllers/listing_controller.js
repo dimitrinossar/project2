@@ -16,9 +16,9 @@ router.post('/', (req, res) => {
     } else {
       const release = checkRes.rows[0]
       const insertSql = `
-                INSERT INTO listings (release_id, user_id, price, condition, info)
-                VALUES ($1, $2, $3, $4, $5);
-            `
+        INSERT INTO listings (release_id, user_id, price, condition, info)
+        VALUES ($1, $2, $3, $4, $5);
+      `
       const values = [
         release.id,
         req.session.user,
@@ -46,10 +46,10 @@ router.put('/:id', (req, res) => {
   pool.query(checkSql, [req.params.id], (err, checkRes) => {
     const user = checkRes.rows[0].user_id
     const insertSql = `
-              UPDATE listings
-              SET price = $1, condition = $2, info = $3
-              WHERE id = $4    
-          `
+      UPDATE listings
+      SET price = $1, condition = $2, info = $3
+      WHERE id = $4
+    `
     const values = [
       req.body.price,
       req.body.condition,

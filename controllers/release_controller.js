@@ -20,10 +20,10 @@ router.post('/', upload.single('album_art'), (req, res) => {
       res.redirect('/release/new')
     } else {
       const insertSql = `
-                INSERT INTO releases (title, artist, genre, catalog_number, album_art)
-                VALUES ($1, $2, $3, $4, $5)
-                RETURNING id;
-            `
+        INSERT INTO releases (title, artist, genre, catalog_number, album_art)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id;
+      `
       const check =
         req.file.path ||
         'https://res.cloudinary.com/doznt5vd0/image/upload/v1678968543/default_album_300_g4_xaz4xp.png'
@@ -46,11 +46,11 @@ router.get('/:id', (req, res) => {
   pool.query(releaseSql, [req.params.id], (err, releaseRes) => {
     const release = releaseRes.rows[0]
     const listingsSql = `
-              SELECT users.username, users.location, listings.price, listings.condition, listings.info, listings.user_id
-              FROM listings INNER JOIN users
-              ON listings.release_id = $1
-              AND listings.user_id = users.id;
-          `
+      SELECT users.username, users.location, listings.price, listings.condition, listings.info, listings.user_id
+      FROM listings INNER JOIN users
+      ON listings.release_id = $1
+      AND listings.user_id = users.id;
+    `
     pool.query(listingsSql, [release.id], (err, listingsRes) => {
       const listings = listingsRes.rows
       res.render('release', { release, listings })
@@ -67,19 +67,36 @@ router.get('/:id/edit', loginCheck, (req, res) => {
 })
 
 router.put('/:id', loginCheck, upload.single('album_art'), (req, res) => {
-  const sql = `
-            UPDATE releases
-            SET title = $1, artist = $2, genre = $3, catalog_number = $4, album_art = $5
-            WHERE id = $6;
-        `
-  const values = [
-    req.body.title,
-    req.body.artist,
-    req.body.genre,
-    req.body.catalog_number,
-    req.path.file,
-    req.params.id,
-  ]
+  let sql = ''
+  let values = []
+  if (req.file.path) {
+    sql = `
+      UPDATE releases
+      SET title = $1, artist = $2, genre = $3, catalog_number = $4, album_art = $5
+      WHERE id = $6;
+    `
+    values = [
+      req.body.title,
+      req.body.artist,
+      req.body.genre,
+      req.body.catalog_number,
+      req.path.file,
+      req.params.id,
+    ]
+  } else {
+    sql = `
+      UPDATE releases
+      SET title = $1, artist = $2, genre = $3, catalog_number = $4
+      WHERE id = $5;
+    `
+    values = [
+      req.body.title,
+      req.body.artist,
+      req.body.genre,
+      req.body.catalog_number,
+      req.params.id,
+    ]
+  }
   pool.query(sql, values, (err, dbRes) => {
     res.redirect(`/release/${req.params.id}`)
   })

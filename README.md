@@ -8,7 +8,7 @@
 - Add to the database
 - Sell your records!
 
-[Click here to join in!](placeholder.url)
+[Click here to join in!](https://kissdogs.onrender.com/)
 
 ## ABOUT
 

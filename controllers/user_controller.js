@@ -40,11 +40,11 @@ router.get('/:id', (req, res) => {
   pool.query(userSql, [req.params.id], (err, userRes) => {
     const user = userRes.rows[0]
     const listingsSql = `
-              SELECT releases.title, releases.artist, releases.catalog_number, listings.id, listings.price, listings.condition, listings.info
-              FROM releases INNER JOIN listings
-              ON releases.id=listings.release_id
-              AND listings.user_id = $1;
-          `
+      SELECT releases.title, releases.artist, releases.catalog_number, listings.id, listings.price, listings.condition, listings.info
+      FROM releases INNER JOIN listings
+      ON releases.id=listings.release_id
+      AND listings.user_id = $1;
+    `
     pool.query(listingsSql, [user.id], (err, listingsRes) => {
       const listings = listingsRes.rows
       res.render('user', { user, listings })
@@ -61,18 +61,29 @@ router.get('/:id/edit', (req, res) => {
 })
 
 router.put('/:id', upload.single('profile_picture'), (req, res) => {
-  const sql = `
-            UPDATE users
-            SET username = $1, location = $2, bio = $3, profile_picture = $5
-            WHERE id = $4;
-        `
-  const values = [
-    req.body.username,
-    req.body.location,
-    req.body.bio,
-    req.params.id,
-    req.file.path,
-  ]
+  let sql = ''
+  let values = []
+  if (req.file.path) {
+    sql = `
+      UPDATE users
+      SET username = $1, location = $2, bio = $3, profile_picture = $4
+      WHERE id = $5;
+    `
+    values = [
+      req.body.username,
+      req.body.location,
+      req.body.bio,
+      req.file.path,
+      req.params.id,
+    ]
+  } else {
+    sql = `
+      UPDATE users
+      SET username = $1, location = $2, bio = $3
+      WHERE id = $4;
+    `
+    values = [req.body.username, req.body.location, req.body.bio, req.params.id]
+  }
   pool.query(sql, values, (err, dbRes) => {
     res.redirect(`/user/${req.params.id}`)
   })
