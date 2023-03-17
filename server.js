@@ -55,7 +55,10 @@ app.get('/', (req, res) => {
         SELECT id, title, artist, catalog_number, album_art FROM releases;
     `
   pool.query(sql, (err, dbRes) => {
-    const releases = dbRes.rows
+    let releases = {}
+    if (dbRes.length !== 0) {
+      releases = dbRes.rows
+    }
     res.render('home', { releases })
   })
 })
