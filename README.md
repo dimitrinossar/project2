@@ -24,6 +24,10 @@ The app is hosted on [render](https://render.com/).
 
 ### WIREFRAMES
 
-| Home page              | Single Release            | Profile                   | Schema                   |
-|------------------------|---------------------------|---------------------------|--------------------------|
-|![](/resources/main.jpg)|![](/resources/release.jpg)|![](/resources/profile.jpg)|![](/resources/schema.jpg)|
+| Home page                 | Single Release            |
+|------------------------   |---------------------------|
+|![](/resources/main.jpg)   |![](/resources/release.jpg)|
+
+|Profile                    | Schema                    |
+|---------------------------|---------------------------|
+|![](/resources/profile.jpg)|![](/resources/schema.jpg) |
