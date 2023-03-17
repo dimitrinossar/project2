@@ -52,7 +52,8 @@ app.use('/release', releaseController)
 app.use('/listing', listingController)
 app.get('/', (req, res) => {
   const sql = `
-        SELECT id, title, artist, catalog_number, album_art FROM releases;
+        SELECT id, title, artist, catalog_number, album_art
+        FROM releases ORDER BY id DESC;
     `
   pool.query(sql, (err, dbRes) => {
     const releases = dbRes.rows

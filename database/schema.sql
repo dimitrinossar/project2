@@ -15,7 +15,8 @@ CREATE TABLE releases (
     title TEXT NOT NULL,
     artist TEXT NOT NULL,
     genre TEXT NOT NULL,
-    catalog_number TEXT NOT NULL
+    catalog_number TEXT NOT NULL,
+    album_art TEXT
 );
 
 CREATE TABLE listings (
