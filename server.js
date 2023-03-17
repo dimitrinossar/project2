@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
     `
   pool.query(sql, (err, dbRes) => {
     let releases = {}
-    if (dbRes.length !== 0) {
+    if (dbRes) {
       releases = dbRes.rows
     }
     res.render('home', { releases })
